@@ -27,7 +27,7 @@ app.use(cors({
         "https://e-commerce-frontend-three-nu.vercel.app" // Frontend Website
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "token"],
     credentials: true
 }));
 
