@@ -7,11 +7,11 @@ import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-import nodemailer from "nodemailer";
+
 
 //App Config
 const app = express();
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
@@ -19,7 +19,20 @@ connectCloudinary();
 // Middleware to parse JSON
 app.use(express.json());
 
-app.use(cors({ origin: "*" }));
+
+// CORS Configuration
+app.use(cors({
+    origin: [
+        "https://e-commerce-admin-panel-tawny.vercel.app", // Admin Panel
+        "https://e-commerce-frontend-three-nu.vercel.app" // Frontend Website
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+}));
+
+// Handle Preflight Requests
+app.options("*", cors());
 
 
 // Api End Points
