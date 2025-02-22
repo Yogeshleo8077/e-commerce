@@ -23,7 +23,7 @@ app.use(express.json());
 // CORS Configuration
 app.use(cors({
     origin: [
-        "https://e-commerce-admin-ruby-omega.vercel.app/", // New Admin Panel
+        "https://e-commerce-admin-ruby-omega.vercel.app", // New Admin Panel
         "https://e-commerce-admin-panel-tawny.vercel.app", // OldAdmin Panel
         "https://e-commerce-frontend-three-nu.vercel.app" // Frontend Website
     ],
