@@ -70,7 +70,7 @@ const PlaceOrder = () => {
     rzp.open();
   };
 
-  const onSubmitHanlder = async (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     try {
@@ -151,168 +151,140 @@ const PlaceOrder = () => {
       toast.error(error.message);
     }
   };
-  return (
-    <form
-      onSubmit={onSubmitHanlder}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
-    >
-      {/* ----------------Left Side------------- */}
-      <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
-        <div className="text-xl sm:text-2xl my-3">
-          <Title text1={"DELIVERY"} text2={"INFORMATION"} />
-        </div>
 
-        <div className="flex gap-3">
+  return (
+    <div className="pt-16 px-6 md:px-16 lg:px-24  min-h-screen">
+      <div className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-800">
+        <Title text1={"Place"} text2={"Order"} />
+      </div>
+
+      <form
+        onSubmit={onSubmitHandler}
+        className="bg-white shadow-lg rounded-lg p-6 sm:p-8 flex flex-col md:flex-row gap-6"
+      >
+        <div className="flex flex-col gap-4 w-full md:w-1/2">
+          <Title text1={"Delivery"} text2={"Information"} />
           <input
-            onChange={onChangeHandler}
             name="firstName"
             value={formData.firstName}
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
+            onChange={onChangeHandler}
+            className="border rounded p-2"
             type="text"
             placeholder="First Name"
             required
           />
           <input
-            onChange={onChangeHandler}
-            value={formData.lastName}
             name="lastName"
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            required
-            placeholder="Last Name"
-          />
-        </div>
-
-        <input
-          onChange={onChangeHandler}
-          value={formData.email}
-          name="email"
-          className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          onChange={onChangeHandler}
-          value={formData.street}
-          name="street"
-          className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="text"
-          placeholder="Street"
-        />
-
-        <div className="flex gap-3">
-          <input
+            value={formData.lastName}
             onChange={onChangeHandler}
-            value={formData.city}
+            className="border rounded p-2"
+            type="text"
+            placeholder="Last Name"
+            required
+          />
+          <input
+            name="email"
+            value={formData.email}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
+            type="email"
+            placeholder="Email"
+            required
+          />
+          <input
+            name="street"
+            value={formData.street}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
+            type="text"
+            placeholder="Street"
+            required
+          />
+          <input
             name="city"
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
+            value={formData.city}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
             type="text"
             placeholder="City"
-          />
-          <input
-            onChange={onChangeHandler}
-            value={formData.state}
-            name="state"
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="State"
-          />
-        </div>
-
-        <div className="flex gap-3">
-          <input
-            onChange={onChangeHandler}
-            value={formData.zipcode}
-            name="zipcode"
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="Zip Code"
-            pattern="[0-9]{5,6}"
-            maxLength="6"
             required
           />
           <input
+            name="state"
+            value={formData.state}
             onChange={onChangeHandler}
-            value={formData.country}
+            className="border rounded p-2"
+            type="text"
+            placeholder="State"
+            required
+          />
+          <input
+            name="zipcode"
+            value={formData.zipcode}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
+            type="text"
+            placeholder="Zip Code"
+            required
+          />
+          <input
             name="country"
-            className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
+            value={formData.country}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
             type="text"
             placeholder="Country"
+            required
+          />
+          <input
+            name="phone"
+            value={formData.phone}
+            onChange={onChangeHandler}
+            className="border rounded p-2"
+            type="tel"
+            placeholder="Phone"
+            required
           />
         </div>
-        <input
-          onChange={onChangeHandler}
-          value={formData.phone}
-          name="phone"
-          className="border outline-none border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="tel"
-          placeholder="Phone"
-          pattern="[0-9]{10}"
-          maxLength="10"
-          required
-        />
-      </div>
 
-      {/* ------------------Right Side----------------- */}
-      <div className="mt-8">
-        <div className="mt-8 min-w-80">
+        <div className="flex flex-col gap-6 w-full md:w-1/2">
           <CartTotal />
-        </div>
-
-        <div className="mt-12">
-          <Title text1={"PAYMENT"} text2={"METHOD"} />
-
-          {/* -------------------Payment Method Selection----------------- */}
-
-          <div className="flex gap-3 flex-col lg:flex-row">
+          <Title text1={"Payment"} text2={"Method"} />
+          <div className="flex gap-3 flex-wrap">
             <div
               onClick={() => setMethod("stripe")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`border p-2 rounded cursor-pointer ${
+                method === "stripe" ? "bg-green-100" : ""
+              }`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "stripe" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.stripe_logo} alt="" />
+              Stripe
             </div>
             <div
               onClick={() => setMethod("razorpay")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`border p-2 rounded cursor-pointer ${
+                method === "razorpay" ? "bg-green-100" : ""
+              }`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razorpay" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.razorpay_logo} alt="" />
+              Razorpay
             </div>
             <div
               onClick={() => setMethod("cod")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`border p-2 rounded cursor-pointer ${
+                method === "cod" ? "bg-green-100" : ""
+              }`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "cod" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
-                CASH ON DELIVERY
-              </p>
+              Cash on Delivery
             </div>
           </div>
-          <div className="w-full text-end mt-8">
-            <button
-              type="submit"
-              className="bg-black text-white px-16 py-3 text-sm"
-            >
-              PLACE ORDER
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-black text-white p-3 rounded-lg hover:bg-gray-700 transition"
+          >
+            Place Order
+          </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
