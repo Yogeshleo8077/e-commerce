@@ -11,6 +11,26 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relavent");
+  const [showScroll, setShowScroll] = useState(false); // State for Back to Top button
+
+  // Handle scrolling to track user position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScroll(true);
+      } else {
+        setShowScroll(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll back to top smoothly
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -75,131 +95,115 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
+    <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t bg-white px-4 sm:px-8">
       {/* Filter Options */}
-      <div className="min-w-60">
+      <div className="w-full sm:w-1/4">
         <p
           onClick={() => setShowFilter(!showFilter)}
-          className="my-2 text-xl flex items-center cursor-pointer gap-2"
+          className="my-2 text-lg flex items-center cursor-pointer gap-2 font-semibold text-gray-800"
         >
-          FILTERS
+          Filters
           <img
-            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
+            className={`h-4 sm:hidden transform transition-all ${
+              showFilter ? "rotate-90" : ""
+            }`}
             src={assets.dropdown_icon}
-            alt=""
+            alt="Dropdown Icon"
           />
         </p>
 
-        {/* Category Filter */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 ${
+          className={`border border-gray-300 p-4 mt-3 rounded-md ${
             showFilter ? "" : "hidden"
           } sm:block`}
         >
-          <p className="mb-3 text-sm font-medium ">CATEGORIES</p>
-          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Men"}
-                onChange={toggleCategory}
-              />
-              Men
-            </p>
-
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Women"}
-                onChange={toggleCategory}
-              />
-              Women
-            </p>
-
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Kids"}
-                onChange={toggleCategory}
-              />
-              Kids
-            </p>
+          <p className="mb-3 text-sm font-semibold text-gray-900">Categories</p>
+          <div className="flex flex-col gap-2 text-sm text-gray-700">
+            {["Men", "Women", "Kids"].map((cat) => (
+              <label
+                key={cat}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <input
+                  className="w-4 h-4 accent-gray-800"
+                  type="checkbox"
+                  value={cat}
+                  onChange={toggleCategory}
+                />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
-        {/* Subcategory Filters */}
 
         <div
-          className={`border border-gray-300 pl-5 py-3 my-5 ${
+          className={`border border-gray-300 p-4 mt-4 rounded-md ${
             showFilter ? "" : "hidden"
           } sm:block`}
         >
-          <p className="mb-3 text-sm font-medium ">TYPE</p>
-          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Topwear"}
-                onChange={toggleSubCategory}
-              />
-              Topwear
-            </p>
-
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Bottomwear"}
-                onChange={toggleSubCategory}
-              />
-              Bottomwear
-            </p>
-
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Winterwear"}
-                onChange={toggleSubCategory}
-              />
-              Winterwear
-            </p>
+          <p className="mb-3 text-sm font-semibold text-gray-900">Type</p>
+          <div className="flex flex-col gap-2 text-sm text-gray-700">
+            {["Topwear", "Bottomwear", "Winterwear"].map((sub) => (
+              <label
+                key={sub}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <input
+                  className="w-4 h-4 accent-gray-800"
+                  type="checkbox"
+                  value={sub}
+                  onChange={toggleSubCategory}
+                />
+                {sub}
+              </label>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Right Section */}
+      {/* Products Section */}
       <div className="flex-1">
-        <div className="flex justify-between text-base sm:text-2xl mb-4">
+        <div className="flex justify-between items-center mb-6">
           <Title text1={"ALL"} text2={"COLLECTION"} />
-          {/* Product Sort */}
           <select
             onChange={(e) => setSortType(e.target.value)}
-            className="broder-2 border-gray-300 text-sm px-2"
+            className="border border-gray-300 text-sm px-3 py-2 rounded-md bg-white shadow-sm cursor-pointer"
           >
-            <option value="relavent">Sort by: Relavent</option>
+            <option value="relavent">Sort by: Relevance</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: High to Low</option>
           </select>
         </div>
 
-        {/* Map Products */}
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              id={item._id}
-              name={item.name}
-              price={item.price}
-              image={item.image}
-            />
-          ))}
+        {/* Product List */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filterProducts.length > 0 ? (
+            filterProducts.map((item, index) => (
+              <ProductItem
+                key={index}
+                id={item._id}
+                name={item.name}
+                price={item.price}
+                image={item.image}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500 text-center col-span-4">
+              No products found.
+            </p>
+          )}
         </div>
       </div>
+
+      {/* Back to Top Button */}
+      {showScroll && (
+        <button
+          onClick={scrollToTop}
+          className="fixed w-10 h-10 flex items-center justify-center text-lg sm:top-4 sm:left-1/2 sm:-translate-x-1/2 bottom-6 left-6 bg-black text-white rounded-full shadow-md transition-all"
+        >
+          ▲
+        </button>
+      )}
     </div>
   );
 };
